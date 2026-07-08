@@ -124,8 +124,8 @@ go build -o smart-cabinet main.go
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| POST | `/api/v1/cabinet/store` | 存入物品（携带 4 位密码） |
-| POST | `/api/v1/cabinet/retrieve` | 取出物品（校验密码） |
+| POST | `/api/v1/cabinet/store` | 存入外卖（携带 4 位密码） |
+| POST | `/api/v1/cabinet/retrieve` | 取出外卖（校验密码） |
 | GET | `/api/v1/cabinet/status` | 查询柜子状态 |
 
 详细文档见 [api/api.md](api/api.md)
@@ -170,5 +170,5 @@ go build -o smart-cabinet main.go
 系统启动时自动建表，无需手动执行 SQL。
 
 - **`cabinet_records`** — 存取操作记录（code, action, created_at）
-- **`current_item`** — 当前柜内物品（code, stored_at, status）
+- **`current_item`** — 当前柜内外卖（code, stored_at, status）
 

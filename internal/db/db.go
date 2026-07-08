@@ -51,10 +51,10 @@ func (d *DB) initTables() error {
 
 		`CREATE TABLE IF NOT EXISTS current_item (
 			id        BIGINT AUTO_INCREMENT PRIMARY KEY,
-			code      VARCHAR(4)  NOT NULL COMMENT '当前物品的取件密码',
+			code      VARCHAR(4)  NOT NULL COMMENT '当前外卖的取件密码',
 			stored_at DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '存入时间',
 			status    ENUM('stored','retrieved') NOT NULL DEFAULT 'stored' COMMENT '状态'
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='当前柜内物品'`,
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='当前柜内外卖'`,
 	}
 
 	for _, q := range queries {
@@ -74,7 +74,7 @@ func (d *DB) InsertRecord(code, action string) error {
 	return err
 }
 
-// SetCurrentItem 设置当前柜内物品（存入时调用）
+// SetCurrentItem 设置当前柜内外卖（存入时调用）
 func (d *DB) SetCurrentItem(code string) error {
 	// 先清空旧记录
 	_, _ = d.conn.Exec("UPDATE current_item SET status='retrieved' WHERE status='stored'")
@@ -85,7 +85,7 @@ func (d *DB) SetCurrentItem(code string) error {
 	return err
 }
 
-// GetCurrentItem 获取当前柜内物品
+// GetCurrentItem 获取当前柜内外卖
 func (d *DB) GetCurrentItem() (*model.CurrentItem, error) {
 	item := &model.CurrentItem{}
 	err := d.conn.QueryRow(
@@ -100,7 +100,7 @@ func (d *DB) GetCurrentItem() (*model.CurrentItem, error) {
 	return item, nil
 }
 
-// MarkRetrieved 标记物品已取走
+// MarkRetrieved 标记外卖已取走
 func (d *DB) MarkRetrieved(id int64) error {
 	_, err := d.conn.Exec(
 		"UPDATE current_item SET status='retrieved' WHERE id=?",

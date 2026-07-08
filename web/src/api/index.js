@@ -19,7 +19,7 @@ async function request(url, options = {}) {
 }
 
 /**
- * 存入物品
+ * 存入外卖
  * @param {string} code - 4位数字密码
  */
 export function storeItem(code) {
@@ -30,7 +30,7 @@ export function storeItem(code) {
 }
 
 /**
- * 取出物品
+ * 取出外卖
  * @param {string} code - 4位数字密码
  */
 export function retrieveItem(code) {

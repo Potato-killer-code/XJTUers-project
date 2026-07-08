@@ -53,7 +53,7 @@ func (h *CabinetHandler) handleStore(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("[API] 存入请求成功，密码: %s", req.Code)
 	writeJSON(w, http.StatusOK, model.Response{
-		Code: 0, Message: "柜门已打开，请放入物品后关门",
+		Code: 0, Message: "柜门已打开，请放入外卖后关门",
 	})
 }
 
@@ -83,7 +83,7 @@ func (h *CabinetHandler) handleRetrieve(w http.ResponseWriter, r *http.Request) 
 
 	log.Printf("[API] 取出请求成功，密码: %s", req.Code)
 	writeJSON(w, http.StatusOK, model.Response{
-		Code: 0, Message: "验证通过，柜门已打开，请取走物品后关门",
+		Code: 0, Message: "验证通过，柜门已打开，请取走外卖后关门",
 	})
 }
 

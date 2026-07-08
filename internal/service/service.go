@@ -17,7 +17,7 @@ var (
 	ErrInvalidCode     = errors.New("密码必须为4位数字")
 	ErrCabinetBusy     = errors.New("柜子当前不可用，请稍后再试")
 	ErrCodeMismatch    = errors.New("密码错误，请重试")
-	ErrCabinetEmpty    = errors.New("柜子内无物品可取")
+	ErrCabinetEmpty    = errors.New("柜子内无外卖可取")
 	ErrMCUNotConnected = errors.New("单片机不在线")
 	ErrMCUSendFailed   = errors.New("与单片机通信失败")
 )
@@ -56,7 +56,7 @@ func (s *CabinetService) onDoorOpened() {
 
 // ---- 业务方法 ----
 
-// Store 存入物品
+// Store 存入外卖
 func (s *CabinetService) Store(code string) error {
 	// 1. 校验密码格式
 	if !codeRegex.MatchString(code) {
@@ -81,10 +81,10 @@ func (s *CabinetService) Store(code string) error {
 		return err
 	}
 
-	// 5. 获取刚插入的物品ID
+	// 5. 获取刚插入的外卖ID
 	item, err := s.dbStore.GetCurrentItem()
 	if err != nil || item == nil {
-		return errors.New("获取物品信息失败")
+		return errors.New("获取外卖信息失败")
 	}
 
 	// 6. 更新状态机
@@ -98,14 +98,14 @@ func (s *CabinetService) Store(code string) error {
 	return nil
 }
 
-// Retrieve 取出物品
+// Retrieve 取出外卖
 func (s *CabinetService) Retrieve(code string) error {
 	// 1. 校验密码格式
 	if !codeRegex.MatchString(code) {
 		return ErrInvalidCode
 	}
 
-	// 2. 检查柜子是否有物品
+	// 2. 检查柜子是否有外卖
 	if !s.state.CanRetrieve() {
 		return ErrCabinetEmpty
 	}
@@ -124,7 +124,7 @@ func (s *CabinetService) Retrieve(code string) error {
 		return ErrCodeMismatch
 	}
 
-	// 5. 获取当前物品
+	// 5. 获取当前外卖
 	item, err := s.dbStore.GetCurrentItem()
 	if err != nil || item == nil {
 		return ErrCabinetEmpty

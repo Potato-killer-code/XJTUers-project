@@ -62,7 +62,7 @@
 
 ---
 
-### 1. 存入物品
+### 1. 存入外卖
 
 **POST** `/api/v1/cabinet/store`
 
@@ -85,7 +85,7 @@
 ```json
 {
   "code": 0,
-  "message": "柜门已打开，请放入物品后关门"
+  "message": "柜门已打开，请放入外卖后关门"
 }
 ```
 
@@ -114,7 +114,7 @@
 
 ---
 
-### 2. 取出物品
+### 2. 取出外卖
 
 **POST** `/api/v1/cabinet/retrieve`
 
@@ -137,7 +137,7 @@
 ```json
 {
   "code": 0,
-  "message": "验证通过，柜门已打开，请取走物品后关门"
+  "message": "验证通过，柜门已打开，请取走外卖后关门"
 }
 ```
 
@@ -155,7 +155,7 @@
 ```json
 {
   "code": 40004,
-  "message": "柜子内无物品可取"
+  "message": "柜子内无外卖可取"
 }
 ```
 
@@ -185,7 +185,7 @@
 |------|------|------|
 | status | string | idle / waiting_close / occupied |
 | status_text | string | 状态中文说明 |
-| has_item | bool | 柜内是否有物品 |
+| has_item | bool | 柜内是否有外卖 |
 | door_open | bool | 柜门是否打开 |
 
 ---
@@ -249,15 +249,15 @@ CREATE TABLE cabinet_records (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='存取记录表';
 ```
 
-### current_item 表（当前柜内物品）
+### current_item 表（当前柜内外卖）
 
 ```sql
 CREATE TABLE current_item (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    code        VARCHAR(4)   NOT NULL COMMENT '当前物品的取件密码',
+    code        VARCHAR(4)   NOT NULL COMMENT '当前外卖的取件密码',
     stored_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '存入时间',
     status      ENUM('stored','retrieved') NOT NULL DEFAULT 'stored' COMMENT '状态'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='当前柜内物品';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='当前柜内外卖';
 ```
 
 ---
@@ -270,7 +270,7 @@ CREATE TABLE current_item (
 | 40001 | 密码格式不正确（必须为4位数字） |
 | 40002 | 柜子当前不可用（门开着或正在操作中） |
 | 40003 | 密码错误 |
-| 40004 | 柜子为空，无物品可取 |
+| 40004 | 柜子为空，无外卖可取 |
 | 50001 | 与单片机通信失败 |
 | 50002 | 数据库操作失败 |
 | 50003 | 单片机不在线 |

@@ -6,9 +6,9 @@ import "time"
 type CabinetStatus string
 
 const (
-	StatusIdle           CabinetStatus = "idle"            // 空闲（无物品，门关）
-	StatusWaitingClose   CabinetStatus = "waiting_close"   // 等待关门
-	StatusOccupied       CabinetStatus = "occupied"        // 已存物，门关
+	StatusIdle         CabinetStatus = "idle"          // 空闲（无外卖，门关）
+	StatusWaitingClose CabinetStatus = "waiting_close" // 等待关门
+	StatusOccupied     CabinetStatus = "occupied"      // 已存物，门关
 )
 
 // StatusText 返回状态的中文描述
@@ -50,7 +50,7 @@ type StatusData struct {
 	DoorOpen   bool          `json:"door_open"`
 }
 
-// CurrentItem 当前柜内物品
+// CurrentItem 当前柜内外卖
 type CurrentItem struct {
 	ID       int64     `json:"id"`
 	Code     string    `json:"code"`

@@ -10,8 +10,8 @@ import (
 type CabinetState struct {
 	mu       sync.RWMutex
 	status   model.CabinetStatus
-	doorOpen bool // 门是否打开（来自MCU上报的最新状态）
-	itemID   int64 // 当前物品ID（0表示无物品）
+	doorOpen bool  // 门是否打开（来自MCU上报的最新状态）
+	itemID   int64 // 当前外卖ID（0表示无外卖）
 }
 
 var (
@@ -45,14 +45,14 @@ func (s *CabinetState) DoorOpen() bool {
 	return s.doorOpen
 }
 
-// HasItem 是否有物品
+// HasItem 是否有外卖
 func (s *CabinetState) HasItem() bool {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	return s.itemID > 0
 }
 
-// ItemID 获取当前物品ID
+// ItemID 获取当前外卖ID
 func (s *CabinetState) ItemID() int64 {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
@@ -113,10 +113,10 @@ func (s *CabinetState) OnDoorClosed() {
 	case model.StatusWaitingClose:
 		// 等待关门状态下，门关了
 		if s.itemID > 0 {
-			// 之前有物品 → 变成已存物
+			// 之前有外卖 → 变成已存物
 			s.status = model.StatusOccupied
 		} else {
-			// 物品已被取走 → 变成空闲
+			// 外卖已被取走 → 变成空闲
 			s.status = model.StatusIdle
 		}
 	}
@@ -129,7 +129,7 @@ func (s *CabinetState) OnDoorOpened() {
 	s.doorOpen = true
 }
 
-// OnItemRetrieved 物品被取走，重置
+// OnItemRetrieved 外卖被取走，重置
 func (s *CabinetState) OnItemRetrieved() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
